@@ -24,7 +24,7 @@ const inserting = 'inserting',
 
 const errorHandler = (err, action) => {
   if ( err ) {
-    console.error(`error with ${process}: `, err)
+    console.error(`error with ${action}: `, err)
     return true
   }
   return false
@@ -72,7 +72,7 @@ const addRoutine = (params, cb) => {
   })
 }
 
-/***********************QUERIES: RETRIEVING DATA ************************/
+/*********************** QUERIES: RETRIEVING DATA ************************/
 
 const getUser = (params, cb) => {
   if ( paramsHandler(params) || cbHandler(cb) ) return
@@ -125,6 +125,7 @@ const getRoutine = (params, cb) => {
 const getStats = (params, cb) => {
   if ( paramsHandler(params) || cbHandler(cb) ) return
   // collect data metrics for types of exercises, improvements, so on
+  cb(`you're doing real nice like`)
 }
 
 /*********************** EXPORTS ************************/
@@ -142,3 +143,16 @@ module.exports ={
   getRoutine,
   getStats
 }
+
+
+/**************** NOTES *******************
+ * data is going back unformatted (as an array with obj(s)), do I want to format for client?
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ * **************** END *******************/

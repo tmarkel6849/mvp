@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:db": "psql -d postgres -U trevormarkel -f ./database/schema.sql"
+    "build:db": "psql -d postgres -U trevormarkel -f ./database/schema.sql",
+    "start": "nodemon ./server/index.js"
   },
   "repository": {
     "type": "git",

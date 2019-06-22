@@ -4,7 +4,8 @@
   "description": "tracker for climbing training",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:db": "psql -d postgres -U trevormarkel -f ./database/schema.sql"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/tmarkel6849/mvp#readme",
   "dependencies": {
-    "dot-env": "0.0.1",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "nodemon": "^1.19.1",
     "pg": "^7.11.0",

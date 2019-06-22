@@ -1,8 +1,7 @@
-require('dot-env').config()
-const { Pool } = require('pg'),
-      { Client } = require('pg')
+require('dotenv').config()
+const { Pool } = require('pg')
 
-/********************* CONNECTIONS **********************/
+/********************* DB CONNECTION **********************/
 
 const pool = process.env.NODE_ENV === 'production'
 ? new Pool({
@@ -16,24 +15,12 @@ const pool = process.env.NODE_ENV === 'production'
   port: process.env.PSQL_PORT,
 })
 
-const client = process.env.NODE_ENV === 'production' ?
-  new Client({
-    connectionString: process.env.PSQL_CONNECTION_STRING
-  }) :
-  new Client({
-    user: process.env.PSQL_USER,
-    host: process.env.PSQL_HOST,
-    database: process.env.PSQL_DB,
-    password: process.env.PSQL_PASSWORD,
-    port: process.env.PSQL_PORT,
-  })
-
 /********************* GLOBAL VARIABLES  **********************/
 
 const inserting = 'inserting',
       retrieving = 'retrieving'
 
-/********************* HELPER FUNCTIONS ***********************/
+/********************* ERROR / EDGE CASE FUNCTIONS ***********************/
 
 const errorHandler = (err, action) => {
   if ( err ) {
@@ -43,78 +30,112 @@ const errorHandler = (err, action) => {
   return false
 }
 
+const dataHandler = (data) => {
+  if ( !data ) {
+    console.log('provide appropriate data....')
+    return true
+  }
+  return false
+}
+
+const cbHandler = (cb) => {
+  if ( !typeof cb !== 'function' ) {
+    console.log('provide appropirate callback....')
+    return true
+  }
+  return false
+}
+
 /********************* QUERIES: INSERT DATA **********************/
 
 const addUser = (data, cb) => {
-  const queryString = 'INSERT INTO users (name, joindate) VALUES ($1, CURRENT_DATE);'
-  client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err, inserting) ) return cb(false)
-    return cb(true)
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
+  const queryString = 'INSERT INTO users (name, weight, boudleringgrade, sportgrade, tradgrade, joindate) VALUES ($1,$2,$3,$4,$5,CURRENT_DATE);'
+  pool.query(queryString, data, (err, result) => {
+     errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
+
 
 const addSession = (data, cb) => {
-  const queryString = 'INSERT INTO session (type, date) VALUES ($1, CURRENT_DATE);'
-  client.query(queryString, data, (err) => {
-    if ( errorHandler(err, inserting) ) return cb(false)
-    return cb(true)
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
+  const queryString = 'INSERT INTO sessions (type, userid, date) VALUES ($1,$2, CURRENT_DATE);'
+  pool.query(queryString, data, (err) => {
+    errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
 
+addSession(['max hangs', 1], (result) => {
+  result ? console.log('session saved') : console.log('session NOT saved')
+})
+
 const addRoutine = (data, cb) => {
-  const queryString = 'INSERT INTO session (type, date) VALUES ($1, CURRENT_DATE);'
-  client.query(queryString, data, (err) => {
-    if ( errorHandler(err, inserting) ) return cb(false)
-    return cb(true)
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
+  const queryString = 'INSERT INTO routines (type, createdby, createddate) VALUES ($1,$2, CURRENT_DATE);'
+  pool.query(queryString, data, (err) => {
+    errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
+
+// addRoutine(['max hangs with weight', 0], (result) => {
+//   result ? console.log('routine saved') : console.log('routine NOT saved')
+// })
 
 /***********************QUERIES: RETRIEVING DATA ************************/
 
 const getUser = (data, cb) => {
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
   const queryString = 'SELECT name, joindate FROM users WHERE name=$1;'
-  client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err, retrieving) ) return cb(false)
-    return cb(result)
+  pool.query(queryString, data, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result)
   })
 }
 
 const getSession = (data, cb) => {
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1 AND sessions.date=$1;'
-  client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err, retrieving) ) return cb(false)
-    return cb(true)
+  pool.query(queryString, data, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(true)
   })
 }
 
 const getLastSession = (data, cb) => {
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1 ORDER BY sessiond.id DESC LIMIT 1;'
-  client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err, retrieving) ) return cb(false)
-    return cb(result)
+  pool.query(queryString, data, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result)
   })
 }
 
 const getAllSessions = (data, cb) => {
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1;'
-  client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err, retrieving) ) return cb(false)
-    return cb(result)
+  pool.query(queryString, data, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result)
   })
 }
 
 const getRoutine = (data, cb) => {
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
   const queryString = 'SELECT type FROM routines WHERE id=$1'
-  client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err, retrieving) ) return cb(false)
-    return cb(result)
+  pool.query(queryString, data, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result)
   })
 }
 
-// const getStats = (data, cb) => {
+const getStats = (data, cb) => {
+  if ( dataHandler(data) ) return
+  if ( cbHandler(cb) ) return
   // collect data metrics for types of exercises, improvements, so on
-// }
-
+}
 
 
 module.exports ={

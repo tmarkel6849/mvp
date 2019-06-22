@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/tmarkel6849/mvp#readme",
   "dependencies": {
-    "dot-env": "0.0.1",
+    "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "nodemon": "^1.19.1",
     "pg": "^7.11.0",

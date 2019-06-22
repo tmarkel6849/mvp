@@ -25,7 +25,8 @@ CREATE TABLE exercises (
 CREATE TABLE routines (
  id SERIAL NOT NULL,
  type VARCHAR NOT NULL,
- createdby INTEGER
+ createdby INTEGER,
+ createddate DATE NOT NULL
 );
 
 CREATE TABLE sessions (
@@ -33,4 +34,16 @@ CREATE TABLE sessions (
   type VARCHAR NOT NULL,
   date DATE NOT NULL,
   userid INTEGER NOT NULL
+);
+
+CREATE TABLE userroutines (
+  id SERIAL NOT NULL,
+  userid INTEGER NOT NULL,
+  routineid INTEGER NOT NULL
+);
+
+CREATE TABLE sessionexercises (
+  id SERIAL NOT NULL,
+  sessionid INTEGER NOT NULL,
+  exerciseid INTEGER NOT NULL
 );

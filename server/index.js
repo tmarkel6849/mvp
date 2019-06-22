@@ -37,9 +37,10 @@ app.post('/newroutine', (req, res) => {
 
 /************************* GET ROUTES *************************/
 
-app.get('/user', (req, res) => {
-  const reqParams = req.body.data
-  db.getUser(reqParams, (result) => {
+app.get('/user/:user', (req, res) => {
+  console.log('data server received.... ', req.body)
+  const params = [ req.params.user ]
+  db.getUser(params, (result) => {
     result ? res.send(result).status(200) : res.send(null).status(400)
   })
 })

@@ -1,0 +1,27 @@
+{
+  "name": "climbing-training",
+  "version": "1.0.0",
+  "description": "tracker for climbing training",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmarkel6849/mvp.git"
+  },
+  "author": "Trevor Markel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tmarkel6849/mvp/issues"
+  },
+  "homepage": "https://github.com/tmarkel6849/mvp#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^7.11.0",
+    "react": "^16.8.6"
+  },
+  "devDependencies": {
+    "webpack": "^4.35.0"
+  }
+}

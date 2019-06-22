@@ -3,7 +3,7 @@ const path = require('path'),
 
 module.exports = {
   mode: 'development',
-  entry: path.join(__dirname, '/client/Index.jsx'),
+  entry: path.join(__dirname, '/client/Index'),
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, 'public'),
@@ -25,9 +25,7 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         exclude: /node_modules/,
         use: [
-          {
-            loader: MiniCss.loader,
-          },
+          { loader: MiniCss.loader },
           'css-loader',
           'sass-loader',
         ],

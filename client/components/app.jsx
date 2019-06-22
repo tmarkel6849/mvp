@@ -3,23 +3,30 @@ import Exercises from './Exercises'
 import Routine from './Routine'
 import Session from './Session'
 import User from './User'
+import { get } from 'http';
 
 export default class App extends React.Component {
   constructor(props) {
-    super(pros)
+    super(props)
     this.state = {
       page: 'login'
     }
+    this.PORT = 3000
   }
 
-  test = () => {
-    console.log('did I make it?')
+  componentDidMount() {
+    const user = 'trevor'
+    fetch(`http://${window.location.hostname}:${this.PORT}/user/${user}`,)
+      .then(response => response.json())
+      .then(data => {
+        console.log('data from the fetch: ', data)
+      })
   }
 
   render() {
     return (
       <div className="login">
-        <input>Please enter your username: </input>
+        I'm here from react!
       </div>
     )
   }

@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./server/index.js",
     "build:db": "psql -d postgres -U trevormarkel -f ./database/schema.sql",
-    "build:react": "webpack -d --watch",
-    "build:server": "webpack -config webpack.server.js --watch"
+    "build:client": "webpack --config webpack.config.js --watch",
+    "build:server": "webpack --config webpack.server.js --watch"
   },
   "repository": {
     "type": "git",

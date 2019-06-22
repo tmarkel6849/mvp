@@ -7,10 +7,29 @@ CREATE DATABASE climbingtraining;
 CREATE TABLE users (
   id SERIAL NOT NULL,
   name VARCHAR NOT NULL,
-  joindate DATAE NOT NULL
+  weight SMALLINT,
+  boudleringgrade SMALLINT.
+  sportgrade SMALLINT,
+  tradgrade SMALLINT,
+  joindate DATE NOT NULL
+);
+
+CREATE TABLE exercises (
+  id SERIAL NOT NULL,
+  type VARCHAR NOT NULL,
+  description VARCHAR,
+  recommendation VARCHAR
+);
+
+CREATE TABLE routines (
+ id SERIAL NOT NULL,
+ type VARCHAR NOT NULL,
+ createdby INTEGER
 );
 
 CREATE TABLE sessions (
   id SERIAL NOT NULL,
-
-)
+  type VARCHAR NOT NULL,
+  date DATE NOT NULL
+  userid INTEGER NOT NULL,
+);

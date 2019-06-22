@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./server/index.js",
     "build:db": "psql -d postgres -U trevormarkel -f ./database/schema.sql",
-    "start": "nodemon ./server/index.js"
+    "build:react": "webpack -d --watch",
+    "build:server": "webpack -config webpack.server.js --watch"
   },
   "repository": {
     "type": "git",
@@ -29,14 +31,19 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "css-loader": "^3.0.0",
+    "jest": "^24.8.0",
+    "jest-fetch-mock": "^2.1.2",
+    "mini-css-extract-plugin": "^0.7.0",
     "sass-loader": "^7.1.0",
     "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.4"
+    "webpack-cli": "^3.3.4",
+    "webpack-node-externals": "^1.7.2"
   }
 }

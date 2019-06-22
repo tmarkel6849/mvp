@@ -8,11 +8,11 @@ const express = require('express'),
 const app = express(),
       PORT = process.env.PORT || 3000
 
-app.use(express.static(path.join(__dirname + '../public')))
+app.use(express.static(path.join(__dirname + '/../public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-/************************* POST ROUTES ***********************/
+/************************* POST ROUTES **************************/
 
 app.post('/newuser', (req, res) => {
   const entry = req.body.data
@@ -35,7 +35,7 @@ app.post('/newroutine', (req, res) => {
   })
 })
 
-/************************* GET ROUTES ***********************/
+/************************* GET ROUTES *************************/
 
 app.get('/user', (req, res) => {
   const reqParams = req.body.data

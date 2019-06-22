@@ -8,7 +8,7 @@ CREATE TABLE users (
   id SERIAL NOT NULL,
   name VARCHAR NOT NULL,
   weight SMALLINT,
-  boudleringgrade SMALLINT,
+  boudlergrade SMALLINT,
   sportgrade SMALLINT,
   tradgrade SMALLINT,
   joindate DATE NOT NULL

@@ -20,7 +20,7 @@ const pool = process.env.NODE_ENV === 'production'
 const inserting = 'inserting',
       retrieving = 'retrieving'
 
-/********************* ERROR / EDGE CASE FUNCTIONS ***********************/
+/********************* ERROR / EDGE CASE HANDLERS ***********************/
 
 const errorHandler = (err, action) => {
   if ( err ) {
@@ -30,8 +30,8 @@ const errorHandler = (err, action) => {
   return false
 }
 
-const dataHandler = (data) => {
-  if ( !data ) {
+const paramsHandler = (params) => {
+  if ( !params || params.length === 0 ) {
     console.log('provide appropriate data....')
     return true
   }
@@ -48,106 +48,94 @@ const cbHandler = (cb) => {
 
 /********************* QUERIES: INSERT DATA **********************/
 
-const addUser = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const addUser = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'INSERT INTO users (name, weight, boudleringgrade, sportgrade, tradgrade, joindate) VALUES ($1,$2,$3,$4,$5,CURRENT_DATE);'
-  pool.query(queryString, data, (err) => {
+  pool.query(queryString, params, (err) => {
      errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
 
-const addSession = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const addSession = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'INSERT INTO sessions (type, userid, date) VALUES ($1,$2, CURRENT_DATE);'
-  pool.query(queryString, data, (err) => {
+  pool.query(queryString, params, (err) => {
     errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
 
-const addRoutine = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const addRoutine = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'INSERT INTO routines (type, createdby, createddate) VALUES ($1,$2, CURRENT_DATE);'
-  pool.query(queryString, data, (err) => {
+  pool.query(queryString, params, (err) => {
     errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
 
 /***********************QUERIES: RETRIEVING DATA ************************/
 
-const getUser = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const getUser = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'SELECT name, joindate FROM users WHERE name=$1;'
-  pool.query(queryString, data, (err, result) => {
-    errorHandler(err, retrieving) ? cb(false) : cb(result)
+  pool.query(queryString, params, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result.rows)
   })
 }
 
-const getSession = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const getAllUser = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
+  const queryString = 'SELECT name, weight, boudleringgrade, sportgrade, tradgrade, joindate FROM users WHERE name=$1;'
+  pool.query(queryString, params, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result.rows)
+  })
+}
+
+const getSession = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1 AND sessions.date=$1;'
-  pool.query(queryString, data, (err, result) => {
-    errorHandler(err, retrieving) ? cb(false) : cb(true)
+  pool.query(queryString, params, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result.rows)
   })
 }
 
-const getLastSession = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const getLastSession = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1 ORDER BY sessiond.id DESC LIMIT 1;'
-  pool.query(queryString, data, (err, result) => {
-    errorHandler(err, retrieving) ? cb(false) : cb(result)
+  pool.query(queryString, params, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result.rows)
   })
 }
 
-const getAllSessions = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const getAllSessions = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1;'
-  pool.query(queryString, data, (err, result) => {
-    errorHandler(err, retrieving) ? cb(false) : cb(result)
+  pool.query(queryString, params, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result.rows)
   })
 }
 
-const getRoutine = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const getRoutine = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   const queryString = 'SELECT type FROM routines WHERE id=$1'
-  pool.query(queryString, data, (err, result) => {
-    errorHandler(err, retrieving) ? cb(false) : cb(result)
+  pool.query(queryString, params, (err, result) => {
+    errorHandler(err, retrieving) ? cb(false) : cb(result.rows)
   })
 }
 
-const getStats = (data, cb) => {
-  if ( dataHandler(data) ) return
-  if ( cbHandler(cb) ) return
+const getStats = (params, cb) => {
+  if ( paramsHandler(params) || cbHandler(cb) ) return
   // collect data metrics for types of exercises, improvements, so on
 }
 
-/*********************** TEST ENTRIES *************************/
-
-// addUser(['trevor', 150, 13, 14, null], (result) => {
-//   result ? console.log('user saved') : console.log('user NOT saved')
-// })
-
-// addSession(['max hangs', 1], (result) => {
-//   result ? console.log('session saved') : console.log('session NOT saved')
-// })
-
-// addRoutine(['max hangs with weight', 0], (result) => {
-//   result ? console.log('routine saved') : console.log('routine NOT saved')
-// })
-
+/*********************** EXPORTS ************************/
 
 module.exports ={
+  pool,
   addUser,
   addSession,
   addRoutine,
   getUser,
+  getAllUser,
   getSession,
   getLastSession,
   getAllSessions,

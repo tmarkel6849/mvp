@@ -8,7 +8,7 @@ CREATE TABLE users (
   id SERIAL NOT NULL,
   name VARCHAR NOT NULL,
   weight SMALLINT,
-  boudleringgrade SMALLINT.
+  boudleringgrade SMALLINT,
   sportgrade SMALLINT,
   tradgrade SMALLINT,
   joindate DATE NOT NULL
@@ -18,7 +18,8 @@ CREATE TABLE exercises (
   id SERIAL NOT NULL,
   type VARCHAR NOT NULL,
   description VARCHAR,
-  recommendation VARCHAR
+  recommendation VARCHAR,
+  routineid SMALLINT
 );
 
 CREATE TABLE routines (
@@ -30,6 +31,6 @@ CREATE TABLE routines (
 CREATE TABLE sessions (
   id SERIAL NOT NULL,
   type VARCHAR NOT NULL,
-  date DATE NOT NULL
-  userid INTEGER NOT NULL,
+  date DATE NOT NULL,
+  userid INTEGER NOT NULL
 );

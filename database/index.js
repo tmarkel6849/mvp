@@ -2,7 +2,7 @@ require('dot-env').config()
 const { Pool } = require('pg'),
       { Client } = require('pg')
 
-/********************* CONNECTIONS *******************/
+/********************* CONNECTIONS **********************/
 
 const pool = process.env.NODE_ENV === 'production'
 ? new Pool({
@@ -28,6 +28,10 @@ const client = process.env.NODE_ENV === 'production' ?
     port: process.env.PSQL_PORT,
   })
 
+/********************* GLOBAL VARIABLES  **********************/
+
+const inserting = 'inserting',
+      retrieving = 'retrieving'
 
 /********************* HELPER FUNCTIONS ***********************/
 
@@ -44,7 +48,7 @@ const errorHandler = (err, action) => {
 const addUser = (data, cb) => {
   const queryString = 'INSERT INTO users (name, joindate) VALUES ($1, CURRENT_DATE);'
   client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, inserting) ) return cb(false)
     return cb(true)
   })
 }
@@ -52,7 +56,7 @@ const addUser = (data, cb) => {
 const addSession = (data, cb) => {
   const queryString = 'INSERT INTO session (type, date) VALUES ($1, CURRENT_DATE);'
   client.query(queryString, data, (err) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, inserting) ) return cb(false)
     return cb(true)
   })
 }
@@ -60,7 +64,7 @@ const addSession = (data, cb) => {
 const addRoutine = (data, cb) => {
   const queryString = 'INSERT INTO session (type, date) VALUES ($1, CURRENT_DATE);'
   client.query(queryString, data, (err) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, inserting) ) return cb(false)
     return cb(true)
   })
 }
@@ -70,7 +74,7 @@ const addRoutine = (data, cb) => {
 const getUser = (data, cb) => {
   const queryString = 'SELECT name, joindate FROM users WHERE name=$1;'
   client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, retrieving) ) return cb(false)
     return cb(result)
   })
 }
@@ -78,7 +82,7 @@ const getUser = (data, cb) => {
 const getSession = (data, cb) => {
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1 AND sessions.date=$1;'
   client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, retrieving) ) return cb(false)
     return cb(true)
   })
 }
@@ -86,7 +90,7 @@ const getSession = (data, cb) => {
 const getLastSession = (data, cb) => {
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1 ORDER BY sessiond.id DESC LIMIT 1;'
   client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, retrieving) ) return cb(false)
     return cb(result)
   })
 }
@@ -94,7 +98,7 @@ const getLastSession = (data, cb) => {
 const getAllSessions = (data, cb) => {
   const queryString = 'SELECT sessions.type, sessions.date FROM sessions WHERE sessions.userid=$1;'
   client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, retrieving) ) return cb(false)
     return cb(result)
   })
 }
@@ -102,7 +106,7 @@ const getAllSessions = (data, cb) => {
 const getRoutine = (data, cb) => {
   const queryString = 'SELECT type FROM routines WHERE id=$1'
   client.query(queryString, data, (err, result) => {
-    if ( errorHandler(err) ) return cb(false)
+    if ( errorHandler(err, retrieving) ) return cb(false)
     return cb(result)
   })
 }

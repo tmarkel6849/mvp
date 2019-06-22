@@ -39,7 +39,7 @@ const dataHandler = (data) => {
 }
 
 const cbHandler = (cb) => {
-  if ( !typeof cb !== 'function' ) {
+  if ( typeof cb !== 'function' ) {
     console.log('provide appropirate callback....')
     return true
   }
@@ -52,11 +52,10 @@ const addUser = (data, cb) => {
   if ( dataHandler(data) ) return
   if ( cbHandler(cb) ) return
   const queryString = 'INSERT INTO users (name, weight, boudleringgrade, sportgrade, tradgrade, joindate) VALUES ($1,$2,$3,$4,$5,CURRENT_DATE);'
-  pool.query(queryString, data, (err, result) => {
+  pool.query(queryString, data, (err) => {
      errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
-
 
 const addSession = (data, cb) => {
   if ( dataHandler(data) ) return
@@ -67,10 +66,6 @@ const addSession = (data, cb) => {
   })
 }
 
-addSession(['max hangs', 1], (result) => {
-  result ? console.log('session saved') : console.log('session NOT saved')
-})
-
 const addRoutine = (data, cb) => {
   if ( dataHandler(data) ) return
   if ( cbHandler(cb) ) return
@@ -79,10 +74,6 @@ const addRoutine = (data, cb) => {
     errorHandler(err, inserting) ? cb(false) : cb(true)
   })
 }
-
-// addRoutine(['max hangs with weight', 0], (result) => {
-//   result ? console.log('routine saved') : console.log('routine NOT saved')
-// })
 
 /***********************QUERIES: RETRIEVING DATA ************************/
 
@@ -136,6 +127,20 @@ const getStats = (data, cb) => {
   if ( cbHandler(cb) ) return
   // collect data metrics for types of exercises, improvements, so on
 }
+
+/*********************** TEST ENTRIES *************************/
+
+// addUser(['trevor', 150, 13, 14, null], (result) => {
+//   result ? console.log('user saved') : console.log('user NOT saved')
+// })
+
+// addSession(['max hangs', 1], (result) => {
+//   result ? console.log('session saved') : console.log('session NOT saved')
+// })
+
+// addRoutine(['max hangs with weight', 0], (result) => {
+//   result ? console.log('routine saved') : console.log('routine NOT saved')
+// })
 
 
 module.exports ={

@@ -91,3 +91,14 @@ app.get('/stats', (req, res) => {
 app.listen(PORT, (err) => {
   err ? console.log('error starting up server') : console.log(`listening on ${PORT}....`)
 })
+
+
+/********************** NOTES *********************
+ * data needs to be coming in as an array for the db
+ *
+ *
+ *
+ *
+ *
+ *
+*/

@@ -1,4 +1,8 @@
 import React from 'react'
+import Exercises from './Exercises'
+import Routine from './Routine'
+import Session from './Session'
+import User from './User'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -6,6 +10,10 @@ export default class App extends React.Component {
     this.state = {
       page: 'login'
     }
+  }
+
+  test = () => {
+    console.log('did I make it?')
   }
 
   render() {

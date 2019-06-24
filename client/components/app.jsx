@@ -15,12 +15,8 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    const user = 'trevor'
-    fetch(`${this.fetchURL}/user/${user}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log('data from the fetch: ', data)
-      })
+    // prompt for username
+    this.getData('user', 'trevor')
   }
 
   getData = (location, request) => {

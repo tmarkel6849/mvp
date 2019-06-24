@@ -1,9 +1,10 @@
 require('dotenv').config()
 
 const express = require('express'),
-      bodyParser = require('body-parser')
-      path = require('path')
-      db = require('../database/index.js')
+      bodyParser = require('body-parser'),
+      path = require('path'),
+      db = require('../database/index.js'),
+      { formatPost } = require('./helpers.js')
 
 const app = express(),
       PORT = process.env.PORT || 3000
@@ -12,51 +13,27 @@ app.use(express.static(path.join(__dirname + '/../public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-/************************ FORMAT POST DATA ***********************/
-
-const formatPost = (entry, entryType) => {
-  let params
-  if ( entryType === 'user' ) {
-    params = [
-      entry.name,
-      entry.wieght,
-      entry.bouldergrade,
-      entry.sportgrade,
-      entry.tradgrade
-    ]
-  } else if ( entryType === 'session' ) {
-    params = [
-      entry.type,
-      entry.user
-    ]
-  } else if ( entryType === 'routine' ) {
-    entry.type,
-    entry.user
-  }
-  return params
-}
-
 /************************* POST ROUTES **************************/
 
 app.post('/newuser', (req, res) => {
-  const entry = req.body.data,
-        params = formatPost(entry, 'user')
+  const entry = req.body.data
+  entry ? params = formatPost(entry, 'user') : res.sendStatus(400)
   db.addUser(params, (result) => {
     result ? res.sendStatus(201) : res.sendStatus(400)
   })
 })
 
 app.post('/newsession', (req, res) => {
-  const entry = req.body.data,
-        params = formatPost(entry, 'session')
+  const entry = req.body.data
+  entry ? params = formatPost(entry, 'session') : res.sendStatus(400)
   db.addSession(params, (result) => {
     result ? res.sendStatus(201) : res.sendStatus(400)
   })
 })
 
 app.post('/newroutine', (req, res) => {
-  const entry = req.body.data,
-        params = formatPost(entry, 'routine')
+  const entry = req.body.data
+  entry ? params = formatPost(entry, 'routine') : res.sendStatus(400)
   db.addRoutine(params, (result) => {
     result ? res.sendStatus(201) : res.sendStatus(400)
   })

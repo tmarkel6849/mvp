@@ -23,7 +23,7 @@ export default class App extends React.Component {
     fetch(`${this.fetchURL}/${location}/${request}`)
       .then(response => response.json())
       .then(data => {
-        console.log('data from the fetch: ', data)
+        console.log('user data from fetch: ', data)
       })
   }
 
@@ -45,7 +45,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="login">
-        I'm here from react!
+        Get user data:
       </div>
     )
   }

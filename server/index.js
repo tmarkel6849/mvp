@@ -12,25 +12,52 @@ app.use(express.static(path.join(__dirname + '/../public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+/************************ FORMAT POST DATA ***********************/
+
+const formatPost = (entry, entryType) => {
+  let params
+  if ( entryType === 'user' ) {
+    params = [
+      entry.name,
+      entry.wieght,
+      entry.bouldergrade,
+      entry.sportgrade,
+      entry.tradgrade
+    ]
+  } else if ( entryType === 'session' ) {
+    params = [
+      entry.type,
+      entry.user
+    ]
+  } else if ( entryType === 'routine' ) {
+    entry.type,
+    entry.user
+  }
+  return params
+}
+
 /************************* POST ROUTES **************************/
 
 app.post('/newuser', (req, res) => {
-  const entry = [ req.params.user ]
-  db.addUser(entry, (result) => {
+  const entry = req.body.data,
+        params = formatPost(entry, 'user')
+  db.addUser(params, (result) => {
     result ? res.sendStatus(201) : res.sendStatus(400)
   })
 })
 
 app.post('/newsession', (req, res) => {
-  const entry = [ req.params.user ]
-  db.addSession(entry, (result) => {
+  const entry = req.body.data,
+        params = formatPost(entry, 'session')
+  db.addSession(params, (result) => {
     result ? res.sendStatus(201) : res.sendStatus(400)
   })
 })
 
 app.post('/newroutine', (req, res) => {
-  const entry = [ req.params.user ]
-  db.addRoutine(entry, (result) => {
+  const entry = req.body.data,
+        params = formatPost(entry, 'routine')
+  db.addRoutine(params, (result) => {
     result ? res.sendStatus(201) : res.sendStatus(400)
   })
 })

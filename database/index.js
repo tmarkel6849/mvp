@@ -50,7 +50,7 @@ const cbHandler = (cb) => {
 
 const addUser = (params, cb) => {
   if ( paramsHandler(params) || cbHandler(cb) ) return
-  const queryString = 'INSERT INTO users (name, weight, boudleringgrade, sportgrade, tradgrade, joindate) VALUES ($1,$2,$3,$4,$5,CURRENT_DATE);'
+  const queryString = 'INSERT INTO users (name, weight, boudlergrade, sportgrade, tradgrade, joindate) VALUES ($1,$2,$3,$4,$5,CURRENT_DATE);'
   pool.query(queryString, params, (err) => {
      errorHandler(err, inserting) ? cb(false) : cb(true)
   })
